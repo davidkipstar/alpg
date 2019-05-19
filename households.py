@@ -56,14 +56,16 @@ class Household:
 									"Fridges"		: [], \
 									"Electronics"	: [], \
 									"Lighting"		: [], \
-									"Standby"		: [] }
+									"Standby"		: [], \
+									"Fan"			: [] }
 		
 		self.consumptionFactor = {	"Other"			: [], \
 									"Inductive"		: [], \
 									"Fridges"		: [], \
 									"Electronics"	: [], \
 									"Lighting"		: [], \
-									"Standby"		: [] }
+									"Standby"		: [],
+									"Fan"			: [] }
 
 		self.HeatGain = {			"PersonGain"	: [], \
 									"DeviceGain"	: [], \
@@ -87,14 +89,16 @@ class Household:
 									"Fridges"		: [], \
 									"Electronics"	: [], \
 									"Lighting"		: [], \
-									"Standby"		: [] }
+									"Standby"		: [], \
+									"Fan" 			: [] }
 		
 		self.ReactiveFactor = {	"Other"			: 1, \
 								"Inductive"		: (random.randint(70,90)/100), \
 								"Fridges"		: (random.randint(50,65)/100), \
 								"Electronics"	: -(random.randint(99,100)/100), \
 								"Lighting"		: -(random.randint(99,100)/100), \
-								"Standby"		: -(random.randint(75,85)/100) }
+								"Standby"		: -(random.randint(75,85)/100), \
+								"Fan"			: 1 }
 		
 		self.PVProfile = []
 		
@@ -120,6 +124,7 @@ class Household:
 		#devices
 		self.Fridges = []
 		self.Devices = { 	"Kettle": devices.DeviceKettle(config.ConsumptionKettle),\
+                            "Fan" : devices.DeviceFan(config.ConsumptionFan),\
 							"Lighting": devices.DeviceLighting(),\
 							"Electronics": devices.DeviceElectronics(),\
 							"Cooking":	devices.DeviceCooking(),\
@@ -146,7 +151,8 @@ class Household:
 		self.Consumption['Other'] = self.consumptionFactor['Other']
 		self.Consumption['Inductive'] = self.consumptionFactor['Inductive']
 		self.Consumption['Fridges'] = self.consumptionFactor['Fridges']
-		
+		self.Consumption['Fan'] = self.consumptionFactor['Fan']
+
 		self.Consumption['Total'] = self.consumptionFactor['Other']
 		self.Consumption['Total'] = [sum(x) for x in zip(self.Consumption['Total'], self.Consumption['Inductive'])]
 		self.Consumption['Total'] = [sum(x) for x in zip(self.Consumption['Total'], self.Consumption['Fridges'])]
@@ -341,7 +347,8 @@ class Household:
 			#ironing
 			if random.randint(1,7) == 1:
 				OtherProfile = [sum(x) for x in zip(OtherProfile, self.Devices["Ironing"].simulate(1440, self.OccupancyAdultsDay, len(self.Persons)))]	
-		
+			
+			#OtherProfile = 
 			#Vacuumcleaning
 			if random.randint(1,7) == 1:
 				OtherProfile = [sum(x) for x in zip(OtherProfile, self.Devices["Vacuumcleaner"].simulate(1440, self.OccupancyAdultsDay, len(self.Persons)))]	
@@ -366,7 +373,8 @@ class Household:
 			LightingProfile = self.Devices["Lighting"].simulate(1440, self.OccupancyPersonsDay, 1388534400+(3600*24*day))
 			ElectronicsProfile = self.Devices["Electronics"].simulate(1440, self.OccupancyPersonsDay, self.OccupancyPerson)
 			InductiveProfile = self.Devices["Ventilation"].simulate(1440, self.HeatingDevices["VentFlow"])
-
+			#Fan
+			FanProfile = self.Devices["Fan"].simulate(1440, day, self.Occupancy, self.OccupancyPerson , self.Persons[0]) #self.Persons
 
 			# Bookkeeping
 			self.consumptionFactor['Electronics'].extend(ElectronicsProfile)
@@ -375,6 +383,8 @@ class Household:
 			self.consumptionFactor['Other'].extend(OtherProfile)
 			self.consumptionFactor['Inductive'].extend(InductiveProfile)
 			self.consumptionFactor['Fridges'].extend(FridgeProfile)
+			self.consumptionFactor["Fan"].extend(FanProfile)
+			
 
 			# Extend the heating vectors
 			self.HeatGain['PersonGain'].extend(HeatPersonGain)

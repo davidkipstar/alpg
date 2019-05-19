@@ -1,65 +1,69 @@
 
-	#Artifical load profile generator v1.2, generation of artificial load profiles to benchmark demand side management approaches
-    #Copyright (C) 2018 Gerwin Hoogsteen
+# Artifical load profile generator v1.2, generation of artificial load profiles to benchmark demand side management approaches
+import profilegentools
+    # Copyright (C) 2018 Gerwin Hoogsteen
 
-    #This program is free software: you can redistribute it and/or modify
-    #it under the terms of the GNU General Public License as published by
-    #the Free Software Foundation, either version 3 of the License, or
-    #(at your option) any later version.
+    # This program is free software: you can redistribute it and/or modify
+    # it under the terms of the GNU General Public License as published by
+    # the Free Software Foundation, either version 3 of the License, or
+    # (at your option) any later version.
 
-    #This program is distributed in the hope that it will be useful,
-    #but WITHOUT ANY WARRANTY; without even the implied warranty of
-    #MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    #GNU General Public License for more details.
+    # This program is distributed in the hope that it will be useful,
+    # but WITHOUT ANY WARRANTY; without even the implied warranty of
+    # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    # GNU General Public License for more details.
 
-    #You should have received a copy of the GNU General Public License
-    #along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    # You should have received a copy of the GNU General Public License
+    # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-    
 
 from configLoader import *
 config = importlib.import_module(cfgFile)
-import profilegentools
 
-class Person:		
+
+class Person:
 	def __init__(self, age):
 		self.generate(age)
-		
-	def generate(self, age):	
-		#Variates could also use a gauss distribution, some persons are more predictable than others ;)
-		self.Age = age
-		
-		self.WorkdayWakeUp_Avg				= profilegentools.gaussMinMax(7*60, 1.5*60)
-		self.WorkdayWakeUp_Variate 			= 10
-		self.WorkdayLeave_Avg				= self.WorkdayWakeUp_Avg + profilegentools.gaussMinMax(45, 15)
-		self.WorkdayLeave_Variate 			= 10
-		self.WorkdayArrival_Avg				= self.WorkdayLeave_Avg + profilegentools.gaussMinMax(8.5*60, 30) 
-		self.WorkdayArrival_Variate			= 15
-		self.WorkdaySport_Avg				= self.WorkdayArrival_Avg + profilegentools.gaussMinMax(2.5*60, 2*60)
-		self.WorkdaySport_Variate			= 15
-		self.WorkdaySportDuration_Avg		= profilegentools.gaussMinMax(1.5*60, 30)
-		self.WorkdaySportDuration_Variate 	= 10
-		self.WorkdayBedTime_Avg				= self.WorkdayWakeUp_Avg + profilegentools.gaussMinMax(15.5*60,30) 
-		self.WorkdayBedTime_Variate			= 15
-		self.WorkdayActivities 				= random.randint(config.personWeekdayActivityChanceMin, config.personWeekdayActivityChanceMax) / 100 #Chance to conduct random activities			
-		
-		self.WeekendWakeUp_Avg 				= profilegentools.gaussMinMax(9*60, 2*60)
-		self.WeekendWakeUp_Variate 			= 20
-		self.WeekendSport_Avg				= profilegentools.gaussMinMax(14*60, 5*60)
-		self.WeekendSport_Variate			= 60
-		self.WeekendSportDuration_Avg		= profilegentools.gaussMinMax(1.5*60, 30)
-		self.WeekendSportDuration_Variate 	= 30
-		self.WeekendBedTime_Avg				= profilegentools.gaussMinMax(23*60, 30) 
-		self.WeekendBedTime_Variate			= 10
-		self.WeekendActivities				= random.randint(config.personWeekendActivityChanceMin, config.personWeekendActivityChanceMax) / 100
 
-		#For a new deepcopy, the following values should be regenerated
-		self.WorkdaySportday = 1 + random.randint(1,5)
-		self.WeekendSportday = 6*random.randint(0,1)
-		self.Workdays = range(1,6)
-		self.DistanceToWork  = 0
-			
-		
+	def generate(self, age):
+		self.Age = age
+	# --edit-- shift the activity schedule
+		self.WorkdayWakeUp_Avg = profilegentools.gaussMinMax(5*60, 0.5*60)
+		self.WorkdayWakeUp_Variate = 10
+		self.WorkdayLeave_Avg = self.WorkdayWakeUp_Avg + \
+		    profilegentools.gaussMinMax(2.5*60, 15)
+		self.WorkdayLeave_Variate = 10
+		self.WorkdayArrival_Avg = self.WorkdayLeave_Avg + \
+		    profilegentools.gaussMinMax(8.5*60, 30)
+		self.WorkdayArrival_Variate = 15
+		self.WorkdaySport_Avg = self.WorkdayArrival_Avg + \
+		    profilegentools.gaussMinMax(2.5*60, 2*60)
+		self.WorkdaySport_Variate = 15
+		self.WorkdaySportDuration_Avg = profilegentools.gaussMinMax(1.5*60, 30)
+		self.WorkdaySportDuration_Variate = 10
+		self.WorkdayBedTime_Avg = self.WorkdayWakeUp_Avg + \
+		    profilegentools.gaussMinMax(16*60, 30)
+		self.WorkdayBedTime_Variate = 15
+		self.WorkdayActivities = random.randint(config.personWeekdayActivityChanceMin,
+		                                        config.personWeekdayActivityChanceMax) / 100  # Chance to conduct random activities
+
+		self.WeekendWakeUp_Avg = profilegentools.gaussMinMax(8*60, 2*60)
+		self.WeekendWakeUp_Variate = 20
+		self.WeekendSport_Avg = profilegentools.gaussMinMax(14*60, 5*60)
+		self.WeekendSport_Variate = 60
+		self.WeekendSportDuration_Avg = profilegentools.gaussMinMax(1.5*60, 30)
+		self.WeekendSportDuration_Variate = 30
+		self.WeekendBedTime_Avg = profilegentools.gaussMinMax(22*60, 30)
+		self.WeekendBedTime_Variate = 10
+		self.WeekendActivities = random.randint(
+		    config.personWeekendActivityChanceMin, config.personWeekendActivityChanceMax) / 100
+
+		# For a new deepcopy, the following values should be regenerated
+		self.WorkdaySportday = 1 + random.randint(1, 5)
+		self.WeekendSportday = 6*random.randint(0, 1)
+		self.Workdays = range(1, 6)
+		self.DistanceToWork = 0
+
 		self.CookingTime = self.WorkdayArrival_Avg + 30
 
 		self.showerMorning = True
@@ -69,8 +73,6 @@ class Person:
 		# Generate Heat parameters
 		self.generateHeatParams()
 
-
-		
 	# def generateActivity(self):
 	# 	self.WorkdaySportday = 1 + random.randint(1,5)
 	# 	self.WeekendSportday = 6 + random.randint(0,1)
@@ -119,7 +121,6 @@ class Person:
 			self.showerDuration += random.randint(5, 10)
 
 
-
 	def setActivities(self, workday, weekend):
 		self.WorkdayActivities 				= workday
 		self.WeekendActivities				= weekend
@@ -129,7 +130,7 @@ class Person:
 			self.DistanceToWork = distance
 	
 	def simulateWorkday(self, day):
-		#select variables
+		# select variables
 		eventList = []
 		self.WorkdayWakeUp = random.randint((self.WorkdayWakeUp_Avg - self.WorkdayWakeUp_Variate), (self.WorkdayWakeUp_Avg + self.WorkdayWakeUp_Variate))
 		eventList.append(self.WorkdayWakeUp)
@@ -139,7 +140,7 @@ class Person:
 		eventList.append(self.WorkdayArrival)
 		
 		if ((day%7) == self.WorkdaySportday):
-			#Today this person will go to sport or have an activity. Times are synchronized to keep it easy
+			# Today this person will go to sport or have an activity. Times are synchronized to keep it easy
 			self.WorkdayActivity = random.randint((self.WorkdaySport_Avg - self.WorkdaySport_Variate), (self.WorkdaySport_Avg + self.WorkdaySport_Variate))
 			eventList.append(self.WorkdayActivity)
 			self.WorkdayActivityEnd = self.WorkdayActivity + random.randint((self.WorkdaySportDuration_Avg - self.WorkdaySportDuration_Variate), (self.WorkdaySportDuration_Avg + self.WorkdaySportDuration_Variate))
@@ -164,27 +165,26 @@ class Person:
 		
 		return activeList
 		
-		
 	def simulateWeekend(self, day):
-		#select variables
+		# select variables
 		eventList = []
 		
-		#basically this simulates a free day. On normal days one will wake up more early
+		# basically this simulates a free day. On normal days one will wake up more early
 		if((day%7)==0 or (day%7)==6):
 			self.WeekendWakeUp = random.randint((self.WeekendWakeUp_Avg - self.WeekendWakeUp_Variate), (self.WeekendWakeUp_Avg + self.WeekendWakeUp_Variate))
 		else:
-			#Day off, get out of bed earlier
+			# Day off, get out of bed earlier
 			self.WeekendWakeUp = random.randint((self.WeekendWakeUp_Avg - self.WeekendWakeUp_Variate - 60), (self.WeekendWakeUp_Avg + self.WeekendWakeUp_Variate - 60))
 		eventList.append(self.WeekendWakeUp)
 		
 		if (((day%7) == self.WeekendSportday)):
-			#Today this person will go to sport or have an activity. Times are synchronized to keep it easy
+			# Today this person will go to sport or have an activity. Times are synchronized to keep it easy
 			self.WeekendActivity = random.randint((self.WeekendSport_Avg - self.WeekendSport_Variate), (self.WeekendSport_Avg + self.WeekendSport_Variate))
 			eventList.append(self.WeekendActivity)
 			self.WeekendActivityEnd = self.WeekendActivity + random.randint((self.WeekendSportDuration_Avg - self.WeekendSportDuration_Variate), (self.WeekendSportDuration_Avg + self.WeekendSportDuration_Variate))
 			eventList.append(self.WeekendActivityEnd)
 		elif ((day%7) == self.WorkdaySportday):
-			#Today this person will go to sport or have an activity. Times are synchronized to keep it easy
+			# Today this person will go to sport or have an activity. Times are synchronized to keep it easy
 			self.WorkdayActivity = random.randint((self.WorkdaySport_Avg - self.WorkdaySport_Variate), (self.WorkdaySport_Avg + self.WorkdaySport_Variate))
 			eventList.append(self.WorkdayActivity)
 			self.WorkdayActivityEnd = self.WorkdayActivity + random.randint((self.WorkdaySportDuration_Avg - self.WorkdaySportDuration_Variate), (self.WorkdaySportDuration_Avg + self.WorkdaySportDuration_Variate))
@@ -192,19 +192,19 @@ class Person:
 		elif (random.random() < self.WeekendActivities):
 			duration = random.randint(90,8*60)
 			if duration > 6*60:
-				#all-day event
+				# all-day event
 				if random.randint(0,1) == 0: #Note: For retired people we might need to add a restriction here
 					self.WeekendActivity = self.WeekendWakeUp + random.randint(60,90)
 				else:
 					self.WeekendActivity = random.randint(13*60,15*60)
 			elif duration > 3*60:
-				#Afternoon activity
+				# Afternoon activity
 				self.WeekendActivity = random.randint(14*60,15*60)
 			elif random.randint(0,1) == 0:
-				#Morning event
+				# Morning event
 				self.WeekendActivity = self.WeekendWakeUp + random.randint(60,90)
 			else:
-				#night event
+				# night event
 				self.WeekendActivity = random.randint(20*60,21*60)
 			eventList.append(self.WeekendActivity)
 			self.WeekendActivityEnd = self.WeekendActivity + duration

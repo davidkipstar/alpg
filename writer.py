@@ -66,6 +66,7 @@ def createEmptyFiles():
 	createFile('Electricity_Profile_GroupElectronics.csv')
 	createFile('Electricity_Profile_GroupLighting.csv')
 	createFile('Electricity_Profile_GroupStandby.csv')
+	createFile('Electricity_Profile_GroupFan.csv')
 	
 	createFile('Reactive_Electricity_Profile.csv')
 	createFile('Reactive_Electricity_Profile_GroupOther.csv')
@@ -74,7 +75,8 @@ def createEmptyFiles():
 	createFile('Reactive_Electricity_Profile_GroupElectronics.csv')
 	createFile('Reactive_Electricity_Profile_GroupLighting.csv')
 	createFile('Reactive_Electricity_Profile_GroupStandby.csv')
-
+	createFile('Reactive_Electricity_Profile_GroupFan.csv')
+	
 	createFile('Electricity_Profile_PVProduction.csv')
 	createFile('PhotovoltaicSettings.txt')
 	createFile('Electricity_Profile_PVProduction.csv')
@@ -120,6 +122,7 @@ def writeHousehold(house, num):
 	writeCsvRow('Electricity_Profile_GroupElectronics.csv', num, house.Consumption['Electronics'])
 	writeCsvRow('Electricity_Profile_GroupLighting.csv', num, house.Consumption['Lighting'])
 	writeCsvRow('Electricity_Profile_GroupStandby.csv', num, house.Consumption['Standby'])
+	writeCsvRow('Electricity_Profile_GroupFan.csv', num, house.Consumption['Fan'])
 	
 	writeCsvRow('Reactive_Electricity_Profile.csv', num, house.ReactiveConsumption['Total'])
 	writeCsvRow('Reactive_Electricity_Profile_GroupOther.csv', num, house.ReactiveConsumption['Other'])
@@ -128,6 +131,7 @@ def writeHousehold(house, num):
 	writeCsvRow('Reactive_Electricity_Profile_GroupElectronics.csv', num, house.ReactiveConsumption['Electronics'])
 	writeCsvRow('Reactive_Electricity_Profile_GroupLighting.csv', num, house.ReactiveConsumption['Lighting'])
 	writeCsvRow('Reactive_Electricity_Profile_GroupStandby.csv', num, house.ReactiveConsumption['Standby'])
+	writeCsvRow('Reactive_Electricity_Profile_GroupFan.csv', num, house.Consumption['Fan'])
 
 	# Save HeatGain profiles
 	writeCsvRow('Heatgain_Profile.csv', num, house.HeatGain['Total'])

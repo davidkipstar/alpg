@@ -113,7 +113,7 @@ ConsumptionOven = 				2000	#W
 ConsumptionMicroWave = 			800		#W
 ConsumptionStoveVentilation = 	120 	#W #But this is maximum, usually set lower!
 ConsumptionInductionStove = 	2200 	#W #http://homeguides.sfgate.com/many-watts-induction-stove-85380.html
-
+ConsumptionFan = 20 
 ConsumptionFridgeBigMin = 		80		#W
 ConsumptionFridgeBigMax = 		120		#W
 ConsumptionFridgeSmallMin = 	50		#W
@@ -145,23 +145,23 @@ householdList = []
 #Select the types of households
 import households
 
-for i in range(0,2):
-	householdList.append(households.HouseholdSingleWorker())
+#for i in range(0,2):
+#	householdList.append(households.HouseholdSingleWorker())
 
-for i in range(0,20):
-	householdList.append(households.HouseholdSingleRetired())
+#for i in range(0,20):
+#	householdList.append(households.HouseholdSingleRetired())
 
-for i in range(0,6):
-	householdList.append(households.HouseholdDualWorker(True))
-
-for i in range(0,6):
+for i in range(0,1):
 	householdList.append(households.HouseholdDualWorker(False))
 
-for i in range(0,16):
-	householdList.append(households.HouseholdDualRetired())
+#for i in range(0,6):
+#	householdList.append(households.HouseholdDualWorker(False))
 
-for i in range(0,20):
-	householdList.append(households.HouseholdFamilyDualWorker(True))
+#for i in range(0,16):
+#	householdList.append(households.HouseholdDualRetired())
 
-for i in range(0,10):
-	householdList.append(households.HouseholdFamilyDualWorker(False))
+#for i in range(0,20):
+#	householdList.append(households.HouseholdFamilyDualWorker(True))
+
+#for i in range(0,10):
+#	householdList.append(households.HouseholdFamilyDualWorker(False))
